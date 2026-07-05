@@ -1,65 +1,56 @@
-const WEDDING_DATE = '2026-10-24T00:00:00+02:00';
-const WEDDING_DISPLAY_DATE = '24.10.2026';
+// =============================
+// ODPOČÍTAVANIE DO SVADBY
+// =============================
 
-function updateCountdown() {
-  const target = new Date(WEDDING_DATE);
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const weddingDay = new Date(target.getFullYear(), target.getMonth(), target.getDate());
-  const diffDays = Math.round((weddingDay - today) / (1000 * 60 * 60 * 24));
-  const el = document.getElementById('countdownText');
+const countdown = document.getElementById("countdown");
 
-  if (!el) return;
+const weddingDate = new Date("2026-10-24T00:00:00");
 
-  if (diffDays > 0) {
-    el.textContent = `o ${diffDays} dní sa stanú v Ňom Jednom jedno`;
-  } else if (diffDays === 0) {
-    el.textContent = 'dnes sa stanú v Ňom Jednom jedno';
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const difference = weddingDate - today;
+const days = Math.ceil(difference / (1000 * 60 * 60 * 24));
+
+if (countdown) {
+  if (days > 0) {
+    countdown.innerHTML =
+      `o <strong>${days}</strong> dní sa stanú v Ňom Jednom jedno`;
+  } else if (days === 0) {
+    countdown.innerHTML =
+      "dnes sa stanú v Ňom Jednom jedno";
   } else {
-    el.textContent = `${WEDDING_DISPLAY_DATE} sa stali v Ňom Jednom jedno`;
+    countdown.innerHTML =
+      "24.10.2026 sa stali v Ňom Jednom jedno";
   }
 }
 
-function setupMobileMenu() {
-  const button = document.querySelector('.nav-toggle');
-  const links = document.querySelector('.nav-links');
-  if (!button || !links) return;
 
-  button.addEventListener('click', () => links.classList.toggle('open'));
-  links.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => links.classList.remove('open'));
-  });
-}
+// =============================
+// RSVP FORMULÁR
+// tu neskôr napojíme Apps Script
+// =============================
 
-function setupRsvpForm() {
-  const form = document.getElementById('rsvpForm');
-  const message = document.getElementById('formMessage');
-  if (!form) return;
+const rsvpForm = document.getElementById("rsvp-form");
 
-  form.addEventListener('submit', async (event) => {
+if (rsvpForm) {
+  rsvpForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    // TODO: Sem neskôr doplniť URL Google Apps Script endpointu.
-    // const endpoint = 'https://script.google.com/macros/s/XXXXX/exec';
-    // const formData = new FormData(form);
-    // await fetch(endpoint, { method: 'POST', body: formData });
-
-    if (message) {
-      message.textContent = 'Ďakujeme, formulár je zatiaľ len ukážka. Po napojení sa údaje odošlú do tabuľky.';
-    }
+    alert(
+      "Ďakujeme za potvrdenie účasti ❤️\n\nFormulár bude čoskoro aktívny."
+    );
   });
 }
 
-function setupGiftMockup() {
-  document.querySelectorAll('[data-gift]').forEach(button => {
-    button.addEventListener('click', () => {
-      const gift = button.getAttribute('data-gift');
-      alert(`Ukážka rezervácie daru: ${gift}. Neskôr sa tu napojí Google Sheet + Apps Script.`);
-    });
-  });
-}
 
-updateCountdown();
-setupMobileMenu();
-setupRsvpForm();
-setupGiftMockup();
+// =============================
+// DARY
+// Google Sheet + Apps Script
+// doplníme neskôr
+// =============================
+
+// sem príde:
+// fetch(GOOGLE_SCRIPT_URL)
+// načítanie darov
+// rezervácia
